@@ -184,7 +184,9 @@
       gerando: "A IA está lendo as notícias de hoje…",
       indisponivel: "IA não configurada. Adicione IA_API_KEY no arquivo .env e reinicie o servidor.",
       offline: "Abra pelo servidor (npm start) para usar a IA.",
-      erro: "Não foi possível gerar o briefing" + (erro ? " (" + erro + ")" : "") + '. <button type="button" id="tentar-ia">Tentar de novo</button>'
+      "estatico-sem-ia": "IA não configurada no GitHub: adicione o secret IA_API_KEY no repositório.",
+      "estatico-erro": "Não foi possível gerar o briefing agora" + (erro ? " (" + esc(erro) + ")" : "") + ". Uma nova tentativa acontece na próxima atualização.",
+      erro: "Não foi possível gerar o briefing" + (erro ? " (" + esc(erro) + ")" : "") + '. <button type="button" id="tentar-ia">Tentar de novo</button>'
     }[status] || "";
     $("status-ia").innerHTML = msg;
     if (!b && status !== "gerando") $("resumo").innerHTML = "";
@@ -216,7 +218,7 @@
   var tentativas = 0;
   async function acompanharBriefing(tentar) {
     try {
-      var r = await fetch("/api/briefing" + (tentar ? "?tentar=1" : ""));
+      var r = await fetch("api/briefing" + (tentar ? "?tentar=1" : ""));
       var d = await r.json();
       if (d.briefing) {
         aplicarBriefing(d.briefing);
@@ -229,18 +231,48 @@
     }
   }
 
+  async function json(url) {
+    var r = await fetch(url, { cache: "no-cache" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }
+
+  async function detectarModo() {
+    if (!SERVIDOR) return "offline";
+    try {
+      var st = await json("api/status");
+      estado.ia = st.ia;
+      return "servidor";
+    } catch (e) {
+      return "estatico";
+    }
+  }
+
+  async function carregarBriefingEstatico() {
+    try {
+      var b = await json("data/briefing.json");
+      if (b.briefing) {
+        aplicarBriefing(b.briefing);
+        renderTudo();
+      }
+      renderBriefing(b.status === "indisponivel" ? "estatico-sem-ia" : b.status === "erro" ? "estatico-erro" : b.status, b.erro);
+    } catch (e) {
+      renderBriefing("estatico-sem-ia");
+    }
+  }
+
   async function carregar() {
     esqueleto();
-    if (!SERVIDOR) {
+    estado.modo = await detectarModo();
+    if (estado.modo !== "servidor") $("caixa-pergunte").hidden = true;
+    if (estado.modo === "offline") {
       prepararDados();
       renderTudo();
       renderBriefing("offline");
       return;
     }
     try {
-      var st = await fetch("/api/status").then(function (r) { return r.json(); });
-      estado.ia = st.ia;
-      var d = await fetch("/api/noticias").then(function (r) { return r.json(); });
+      var d = await json(estado.modo === "servidor" ? "api/noticias" : "data/noticias.json");
       if (!d.noticias || !d.noticias.length) throw new Error("vazio");
       NOTICIAS.length = 0;
       Array.prototype.push.apply(NOTICIAS, d.noticias);
@@ -255,11 +287,13 @@
     renderTudo();
     idx = 0;
     girar();
-    if (estado.ia) {
+    if (estado.modo === "estatico") {
+      carregarBriefingEstatico();
+    } else if (estado.ia) {
       renderBriefing("gerando");
       acompanharBriefing();
     } else {
-      renderBriefing(SERVIDOR ? "indisponivel" : "offline");
+      renderBriefing("indisponivel");
     }
   }
 
@@ -276,7 +310,7 @@
     btn.textContent = "Pensando…";
     out.innerHTML = '<div class="esqueleto" style="height:60px"></div>';
     try {
-      var r = await fetch("/api/perguntar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pergunta: q }) });
+      var r = await fetch("api/perguntar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pergunta: q }) });
       var d = await r.json();
       if (!r.ok) throw new Error(d.error || "Falha ao consultar a IA");
       var texto = esc(d.resposta).replace(/\[(\d+)\]/g, function (m, id) {

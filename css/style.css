@@ -132,3 +132,4 @@ main{flex:999 1 640px;min-width:0;display:flex;flex-direction:column;gap:28px;ou
   .destaque .corpo{padding:20px}
   .capa{min-height:120px}
 }
+[hidden]{display:none!important}

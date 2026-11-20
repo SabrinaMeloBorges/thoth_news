@@ -1,0 +1,63 @@
+name: Atualizar site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache
+          key: briefing-${{ github.run_id }}
+          restore-keys: briefing-
+
+      - name: Buscar notícias e gerar briefing
+        run: node scripts/gerar.js
+        env:
+          IA_API_KEY: ${{ secrets.IA_API_KEY }}
+
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: .cache
+          key: briefing-${{ github.run_id }}
+
+      - name: Montar site
+        run: |
+          mkdir _site
+          cp -r index.html favicon.svg css js data _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
