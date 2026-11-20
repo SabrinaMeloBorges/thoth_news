@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Notícias de contabilidade, reforma tributária e Simples Nacional.">
+<title>Radar Contábil — Contabilidade e Reforma Tributária</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="barra">
+  <div class="wrap"><span id="data"></span><span>Contabilidade · Reforma Tributária · Simples Nacional</span></div>
+</div>
+
+<header class="topo">
+  <div class="wrap">
+    <div class="logo">Radar <span>Contábil</span><small>Notícias para quem vive de números e de norma</small></div>
+    <form class="busca" id="form-busca" role="search">
+      <input id="campo-busca" type="search" placeholder="Buscar notícias…" aria-label="Buscar notícias" autocomplete="off">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+</header>
+
+<nav class="menu" aria-label="Tópicos"><div class="wrap" id="menu"></div></nav>
+
+<div class="wrap">
+  <div class="ultimas"><b>ÚLTIMAS</b><a id="ultima" href="#"></a></div>
+
+  <div class="grade">
+    <main id="principal"></main>
+
+    <aside class="lateral">
+      <div class="caixa">
+        <h5>Resumo por IA</h5>
+        <button class="btn-ia" id="btn-ia">✨ Classificar e resumir</button>
+        <ul id="resumo"></ul>
+        <p id="status"></p>
+      </div>
+      <div class="caixa"><h5>Mais lidas</h5><ol id="mais-lidas"></ol></div>
+      <div class="caixa"><h5>Datas importantes</h5><div id="prazos"></div></div>
+    </aside>
+  </div>
+</div>
+
+<footer class="rodape">
+  <div class="wrap">Resumos feitos em palavras próprias; a matéria completa está no link de cada fonte. A classificação automática pode errar. Edição de 20/11/2026.</div>
+</footer>
+
+<button id="topo-btn" aria-label="Voltar ao topo">↑</button>
+
+<script src="js/dados.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
