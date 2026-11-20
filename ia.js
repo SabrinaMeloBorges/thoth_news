@@ -41,39 +41,68 @@ function blocoNoticias(noticias) {
   return "<noticias>\n" + linhas.join("\n") + "\n</noticias>";
 }
 
-async function chamar(corpo, timeoutMs) {
-  if (!API_KEY) throw new Error("IA_API_KEY não configurada");
+const RESERVAS = (process.env.IA_MODELOS_RESERVA ?? "gemini-3.5-flash-lite,gemini-flash-lite-latest")
+  .split(",")
+  .map((m) => m.trim())
+  .filter((m) => m && m !== MODELO);
+const TRANSITORIO = new Set([429, 500, 502, 503, 504]);
+const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
+
+async function chamarModelo(modelo, corpo, timeoutMs) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
     const r = await fetch(BASE_URL + "/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + API_KEY },
-      body: JSON.stringify({ model: MODELO, ...corpo }),
+      body: JSON.stringify({ model: modelo, ...corpo }),
       signal: ctrl.signal
     });
     const dados = await r.json().catch(() => ({}));
-    if (r.status === 429) {
-      const erro = new Error("Limite de uso da IA atingido. Tente de novo em alguns minutos.");
-      erro.status = 429;
-      throw erro;
-    }
     if (!r.ok) {
       const msg = (dados.error && (dados.error.message || dados.error)) || "HTTP " + r.status;
-      const erro = new Error("Erro da IA (" + r.status + "): " + (typeof msg === "string" ? msg : JSON.stringify(msg)));
+      const erro = new Error(
+        r.status === 429
+          ? "Limite de uso da IA atingido. Tente de novo em alguns minutos."
+          : r.status === 503
+            ? "A IA está sobrecarregada no momento. Tente de novo em alguns minutos."
+            : "Erro da IA (" + r.status + "): " + (typeof msg === "string" ? msg : JSON.stringify(msg))
+      );
       erro.status = r.status;
+      erro.espera = Number(r.headers.get("retry-after")) || 0;
       throw erro;
     }
     const escolha = dados.choices && dados.choices[0];
     if (!escolha || !escolha.message) throw new Error("Resposta vazia da IA");
     if (escolha.finish_reason === "length") throw new Error("Resposta da IA cortada por limite de tamanho");
-    return { texto: String(escolha.message.content || "").trim(), modelo: dados.model || MODELO };
+    return { texto: String(escolha.message.content || "").trim(), modelo: dados.model || modelo };
   } catch (e) {
     if (e.name === "AbortError") throw new Error("A IA demorou demais para responder");
     throw e;
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function chamar(corpo, timeoutMs) {
+  if (!API_KEY) throw new Error("IA_API_KEY não configurada");
+  let ultimoErro;
+  for (const modelo of [MODELO, ...RESERVAS]) {
+    for (let tentativa = 0; tentativa < 2; tentativa++) {
+      try {
+        return await chamarModelo(modelo, corpo, timeoutMs);
+      } catch (e) {
+        ultimoErro = e;
+        if (!TRANSITORIO.has(e.status)) {
+          if (e.status === 404 && modelo !== MODELO) break;
+          throw e;
+        }
+        console.warn(`IA ${modelo}: ${e.status}, ${tentativa === 0 ? "tentando de novo" : "trocando de modelo"}`);
+        if (tentativa === 0) await pausa(Math.min(Math.max(e.espera * 1000, e.status === 429 ? 5000 : 2000), 20000));
+      }
+    }
+  }
+  throw ultimoErro;
 }
 
 const FORMATOS = [
@@ -143,7 +172,7 @@ async function responder(pergunta, noticias) {
           content:
             SISTEMA_EDITOR +
             " Responda perguntas do leitor usando só as notícias abaixo. Cite as fontes no formato [id] logo após a informação. " +
-            "Se as notícias não responderem, diga isso claramente e sugira o que buscar. Máximo de 120 palavras, sem markdown.\n\n" +
+            "Se as notícias não responderem, diga isso claramente e sugira o que buscar. Seja direto: no máximo 60 palavras, em 1 a 3 frases curtas, sem markdown.\n\n" +
             blocoNoticias(noticias)
         },
         { role: "user", content: pergunta }

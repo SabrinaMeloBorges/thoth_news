@@ -45,6 +45,22 @@ function resumir(texto, max = 220) {
   return corte.slice(0, corte.lastIndexOf(" ")) + "…";
 }
 
+function imagem(item) {
+  const padroes = [
+    /<media:content[^>]*?url="([^"]+)"[^>]*>/i,
+    /<media:thumbnail[^>]*?url="([^"]+)"/i,
+    /<enclosure[^>]*?type="image\/[^"]*"[^>]*?url="([^"]+)"/i,
+    /<enclosure[^>]*?url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"/i,
+    /<img[^>]*?\ssrc="([^"]+)"/i,
+    /&lt;img[^&]*?\ssrc=(?:&quot;|")([^"&]+)/i
+  ];
+  for (const re of padroes) {
+    const m = item.match(re);
+    if (m && /^https:\/\//.test(decodificar(m[1]))) return decodificar(m[1]);
+  }
+  return "";
+}
+
 function parse(xml, fonte) {
   const itens = xml.match(/<item[\s>][\s\S]*?<\/item>/gi) || [];
   return itens.slice(0, MAX_POR_FONTE).map((it) => {
@@ -60,6 +76,7 @@ function parse(xml, fonte) {
       t: titulo,
       s: origem,
       u: limpar(tag(it, "link")),
+      img: imagem(it),
       x: fonte.nome === "Google Notícias" || desc.startsWith(titulo) ? "" : resumir(desc),
       ts: isNaN(data) ? 0 : data.getTime(),
       k: fonte.k,
@@ -114,6 +131,7 @@ async function coletar(forcar = false) {
       d: n.ts ? new Date(n.ts).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }) : "",
       u: n.u,
       x: n.x,
+      img: n.img || undefined,
       k: n.k,
       via: n.via
     }));

@@ -5,14 +5,18 @@ const { coletar } = require("./fontes");
 const ia = require("./ia");
 
 const PORT = Number(process.env.PORT) || 3000;
-const ROOT = __dirname;
-const PUBLIC = new Set(["/index.html", "/css/style.css", "/js/app.js", "/js/dados.js", "/favicon.svg"]);
+const ROOT = path.resolve(__dirname, process.env.SITE_DIR || ".");
+const PUBLICO = /^\/(index\.html|favicon\.svg|(css|js|img)\/[\w.-]+)$/;
 
 const TIPOS = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".js": "application/javascript; charset=utf-8",
-  ".svg": "image/svg+xml"
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".webp": "image/webp",
+  ".woff2": "font/woff2"
 };
 
 function json(res, status, body) {
@@ -35,15 +39,17 @@ function lerCorpo(req, limite = 10000) {
   });
 }
 
-const briefing = { chave: "", status: "ocioso", dados: null, erro: "" };
+const briefing = { chave: "", status: "ocioso", dados: null, erro: "", erroEm: 0 };
+const ESPERA_APOS_ERRO = 3 * 60 * 1000;
 
 function chaveDe(noticias) {
   return noticias.map((n) => n.t).join("|");
 }
 
-function gerarBriefing(noticias) {
+function gerarBriefing(noticias, forcar = false) {
   const chave = chaveDe(noticias);
   if (briefing.chave === chave && briefing.status !== "erro") return;
+  if (briefing.status === "erro" && !forcar && Date.now() - briefing.erroEm < ESPERA_APOS_ERRO) return;
   briefing.chave = chave;
   briefing.status = "gerando";
   briefing.erro = "";
@@ -58,6 +64,7 @@ function gerarBriefing(noticias) {
       if (briefing.chave !== chave) return;
       briefing.status = "erro";
       briefing.erro = e.message;
+      briefing.erroEm = Date.now();
       console.error("Falha no briefing:", e.message);
     });
 }
@@ -77,7 +84,7 @@ async function rotaBriefing(req, res) {
     const erro = briefing.erro;
     if (new URL(req.url, "http://x").searchParams.has("tentar")) {
       briefing.chave = "";
-      gerarBriefing(dados.noticias);
+      gerarBriefing(dados.noticias, true);
     }
     return json(res, 200, { status: "erro", erro });
   }
@@ -117,7 +124,7 @@ async function rotaPerguntar(req, res) {
 function estatico(req, res) {
   let rota = decodeURIComponent(new URL(req.url, "http://x").pathname);
   if (rota === "/") rota = "/index.html";
-  if (!PUBLIC.has(rota)) {
+  if (!PUBLICO.test(rota) || rota.includes("..")) {
     res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
     return res.end("Não encontrado");
   }

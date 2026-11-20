@@ -3,93 +3,139 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Thoth News: notícias de contabilidade, reforma tributária e Simples Nacional, com briefing diário por IA.">
-<meta name="theme-color" content="#0B3D6E">
-<title>Thoth News — Contabilidade e Reforma Tributária</title>
+<title>Thoth News · Contabilidade, tributos e reforma tributária</title>
+<meta name="description" content="Notícias de contabilidade, reforma tributária e Simples Nacional reunidas das principais fontes, com o que muda para o escritório.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="Thoth News">
+<meta property="og:description" content="Notícias de contabilidade e tributos, com o que muda para o escritório.">
+<meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<script>(function(){var t;try{t=localStorage.getItem("tema")}catch(e){}if(t!=="claro"&&t!=="escuro")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"escuro":"claro";document.documentElement.setAttribute("data-tema",t);if(t==="escuro")document.querySelector('meta[name="theme-color"]').setAttribute("content","#0D1421")})()</script>
+<script>(function(){var t;try{t=localStorage.getItem("tema")}catch(e){}if(t!=="claro"&&t!=="escuro")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"escuro":"claro";document.documentElement.setAttribute("data-tema",t)})()</script>
 </head>
 <body>
-<a class="pular" href="#principal">Pular para o conteúdo</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+  <symbol id="i-lua" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></symbol>
+  <symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-marcador" viewBox="0 0 24 24"><path d="M18 21l-6-4-6 4V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  <symbol id="i-fechar" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-enviar" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-conversa" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></symbol>
+  <symbol id="i-usuario" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-externo" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</svg>
 
-<div class="barra">
-  <div class="wrap"><span id="data"></span><span>Contabilidade · Reforma Tributária · Simples Nacional</span></div>
-</div>
+<a class="pular" href="#principal">Pular para as notícias</a>
+<h1 class="sr">Thoth News: notícias de contabilidade, tributos e reforma tributária</h1>
 
-<header class="topo">
+<div class="utilidade">
   <div class="wrap">
-    <a class="logo" href="./"aria-label="Thoth News, página inicial">
-      <svg width="40" height="40" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#0B3D6E"/><path d="M24 9a10 10 0 1 0 0 18a8 8 0 1 1 0-18z" fill="#F2B632"/></svg>
-      <span>Thoth<b> News</b></span>
-    </a>
-    <div class="topo-acoes">
-    <form class="busca" id="form-busca" role="search">
-      <label class="sr" for="campo-busca">Buscar notícias</label>
-      <input id="campo-busca" type="search" placeholder="Buscar: CBS, PGDAS-D, NBC…" autocomplete="off">
-      <button type="submit">Buscar</button>
-    </form>
-    <button type="button" class="tema-btn" id="tema-btn" aria-label="Ativar tema escuro" aria-pressed="false">☾</button>
+    <p><time id="hoje"></time><span id="atualizado"></span></p>
+    <div class="util-acoes">
+      <a class="util-link" id="salvas-link" href="?salvos" data-salvos>Salvas</a>
+      <button type="button" class="util-link" data-abrir-chat><svg class="ic" aria-hidden="true"><use href="#i-conversa"/></svg>Pergunte ao Thoth</button>
+      <button type="button" class="icone" id="tema-btn" aria-label="Usar tema escuro"><svg class="ic" aria-hidden="true"><use href="#i-lua"/></svg></button>
+      <div id="conta" class="conta"></div>
     </div>
   </div>
-  <nav class="menu" aria-label="Editorias"><div class="wrap" id="menu"></div></nav>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="marca" href="./" aria-label="Thoth News, capa">
+      <img src="favicon.svg" width="44" height="44" alt="">
+      <span class="marca-nome" translate="no">Thoth<em>News</em></span>
+    </a>
+    <p class="marca-linha">Contabilidade, tributos e reforma tributária, com o que muda para o escritório</p>
+  </div>
 </header>
 
-<div class="wrap">
-  <div class="ultimas" aria-live="off"><b>ÚLTIMAS</b><a id="ultima" href="#" target="_blank" rel="noopener"></a></div>
+<nav class="editorias" aria-label="Editorias">
+  <div class="wrap">
+    <div class="editorias-lista" id="editorias"></div>
+    <form class="busca" id="form-busca" role="search">
+      <label class="sr" for="campo-busca">Buscar notícias</label>
+      <svg class="ic" aria-hidden="true"><use href="#i-busca"/></svg>
+      <input id="campo-busca" name="q" type="search" placeholder="Buscar CBS, PGDAS-D, NBC…" autocomplete="off" spellcheck="false">
+    </form>
+  </div>
+</nav>
+
+<div class="agora wrap" aria-live="off">
+  <span class="agora-rotulo">Agora</span>
+  <a id="agora-link" href="#" target="_blank" rel="noopener"></a>
 </div>
 
-<div class="wrap grade">
-  <main id="principal" tabindex="-1" aria-busy="true"></main>
-
-  <aside class="lateral">
-    <section class="caixa briefing" aria-labelledby="t-briefing">
-      <div class="caixa-topo">
-        <h2 id="t-briefing">Seu briefing de hoje</h2>
-        <span class="selo">Gerado por IA</span>
-      </div>
-      <ul id="resumo" aria-live="polite"></ul>
-      <p class="aviso" id="status-ia" role="status"></p>
-    </section>
-
-    <section class="caixa pergunte" id="caixa-pergunte" aria-labelledby="t-pergunte">
-      <div class="caixa-topo">
-        <h2 id="t-pergunte">Pergunte ao Thoth</h2>
-        <span class="selo">IA</span>
-      </div>
-      <form id="form-pergunta">
-        <label class="sr" for="campo-pergunta">Sua pergunta sobre as notícias</label>
-        <textarea id="campo-pergunta" rows="2" maxlength="500" placeholder="Ex.: o que muda no PGDAS-D este mês?"></textarea>
-        <button type="submit" id="btn-pergunta">Perguntar</button>
-      </form>
-      <div id="resposta" aria-live="polite"></div>
-    </section>
-
-    <section class="caixa" aria-labelledby="t-alta">
-      <h2 id="t-alta">Em alta</h2>
-      <ol id="em-alta" class="ranking"></ol>
-    </section>
-
-    <section class="caixa" aria-labelledby="t-prazos">
-      <h2 id="t-prazos">Prazos importantes</h2>
-      <div id="prazos"></div>
-    </section>
-  </aside>
-</div>
+<main id="principal" tabindex="-1" aria-busy="true"></main>
 
 <footer class="rodape">
-  <div class="wrap">
-    <p>Resumos em palavras próprias; a matéria completa está no link de cada fonte. Conteúdo gerado por IA pode conter erros: confira sempre a fonte original.</p>
+  <div class="wrap rodape-grade">
+    <div>
+      <a class="marca marca-rodape" href="./" aria-label="Thoth News, capa">
+        <img src="favicon.svg" width="36" height="36" alt="">
+        <span class="marca-nome" translate="no">Thoth<em>News</em></span>
+      </a>
+      <p>O Thoth reúne as notícias de contabilidade e tributos publicadas por portais, conselhos e jornais, e explica em poucas linhas o que muda para o escritório. A matéria completa fica sempre na fonte.</p>
+    </div>
+    <div>
+      <h2>Editorias</h2>
+      <ul id="rodape-editorias"></ul>
+    </div>
+    <div>
+      <h2>Fale com a redação</h2>
+      <p>Sugestões de pauta, correções e feedback:</p>
+      <p><a href="mailto:contato.thothnews@gmail.com?subject=Feedback%20Thoth%20News">contato.thothnews@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="wrap rodape-fim">
+    <p>Os resumos e o “por que importa” são escritos por IA a partir das matérias e podem conter erros. Confira sempre a fonte original.</p>
     <p id="fontes-info"></p>
   </div>
 </footer>
 
-<button id="topo-btn" type="button" aria-label="Voltar ao topo">↑</button>
+<button type="button" class="chat-atalho" data-abrir-chat aria-label="Pergunte ao Thoth"><svg class="ic" aria-hidden="true"><use href="#i-conversa"/></svg><span>Pergunte</span></button>
 
+<aside class="chat" id="chat" aria-labelledby="chat-titulo" hidden>
+  <header class="chat-cab">
+    <div>
+      <h2 id="chat-titulo">Pergunte ao Thoth</h2>
+      <p id="chat-modo">Respostas curtas, com base nas notícias de hoje</p>
+    </div>
+    <button type="button" class="icone" id="chat-fechar" aria-label="Fechar conversa"><svg class="ic" aria-hidden="true"><use href="#i-fechar"/></svg></button>
+  </header>
+  <div class="chat-msgs" id="chat-msgs" aria-live="polite"></div>
+  <div class="chat-sugestoes" id="chat-sugestoes"></div>
+  <form class="chat-form" id="chat-form">
+    <label class="sr" for="chat-campo">Sua pergunta</label>
+    <input id="chat-campo" name="pergunta" type="text" maxlength="500" autocomplete="off" placeholder="Ex.: o que muda no Simples em 2027?">
+    <button type="submit" class="icone icone-cheio" aria-label="Enviar pergunta"><svg class="ic" aria-hidden="true"><use href="#i-enviar"/></svg></button>
+  </form>
+</aside>
+
+<dialog class="login" id="login" aria-labelledby="login-titulo">
+  <button type="button" class="icone login-fechar" data-fechar-login aria-label="Fechar"><svg class="ic" aria-hidden="true"><use href="#i-fechar"/></svg></button>
+  <img src="favicon.svg" width="48" height="48" alt="">
+  <h2 id="login-titulo">Entre no Thoth News</h2>
+  <p>Salve notícias e encontre todas elas em qualquer dispositivo.</p>
+  <button type="button" class="botao botao-contorno botao-largo" id="entrar-google"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Continuar com Google</button>
+  <button type="button" class="botao botao-cheio botao-largo" id="entrar-apple"><svg width="16" height="18" viewBox="0 0 384 512" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Continuar com Apple</button>
+  <p class="login-aviso" id="login-aviso" role="status"></p>
+  <div class="login-ou"><span>ou</span></div>
+  <button type="button" class="botao-texto" data-fechar-login>Continuar sem conta</button>
+  <p class="login-letra">Sem conta, as notícias salvas ficam só neste navegador.</p>
+</dialog>
+
+<div class="aviso-flutuante" id="aviso" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
 <script src="js/dados.js"></script>
+<script src="js/conta.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
