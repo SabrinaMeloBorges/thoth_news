@@ -97,7 +97,8 @@ function permitido(ip) {
 
 async function rotaPerguntar(req, res) {
   if (!ia.disponivel()) return json(res, 503, { error: "IA não configurada no servidor" });
-  if (!permitido(req.socket.remoteAddress)) return json(res, 429, { error: "Muitas perguntas seguidas. Aguarde alguns minutos." });
+  const ip = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim() || req.socket.remoteAddress;
+  if (!permitido(ip)) return json(res, 429, { error: "Muitas perguntas seguidas. Aguarde alguns minutos." });
   let pergunta;
   try {
     pergunta = String(JSON.parse(await lerCorpo(req)).pergunta || "").trim();

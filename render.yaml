@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: thoth-news
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/status
+    autoDeploy: true
+    envVars:
+      - key: IA_API_KEY
+        sync: false
+      - key: IA_BASE_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai
+      - key: IA_MODELO
+        value: gemini-3.8-flash
