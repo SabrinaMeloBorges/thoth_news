@@ -3,11 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Notícias de contabilidade, reforma tributária e Simples Nacional.">
-<title>Radar Contábil — Contabilidade e Reforma Tributária</title>
+<meta name="description" content="Thoth News: notícias de contabilidade, reforma tributária e Simples Nacional, com briefing diário por IA.">
+<meta name="theme-color" content="#0B3D6E">
+<title>Thoth News — Contabilidade e Reforma Tributária</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<a class="pular" href="#principal">Pular para o conteúdo</a>
 
 <div class="barra">
   <div class="wrap"><span id="data"></span><span>Contabilidade · Reforma Tributária · Simples Nacional</span></div>
@@ -15,40 +21,69 @@
 
 <header class="topo">
   <div class="wrap">
-    <div class="logo">Radar <span>Contábil</span><small>Notícias para quem vive de números e de norma</small></div>
+    <a class="logo" href="/" aria-label="Thoth News, página inicial">
+      <svg width="40" height="40" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#0B3D6E"/><path d="M24 9a10 10 0 1 0 0 18a8 8 0 1 1 0-18z" fill="#F2B632"/></svg>
+      <span>Thoth<b> News</b></span>
+    </a>
     <form class="busca" id="form-busca" role="search">
-      <input id="campo-busca" type="search" placeholder="Buscar notícias…" aria-label="Buscar notícias" autocomplete="off">
+      <label class="sr" for="campo-busca">Buscar notícias</label>
+      <input id="campo-busca" type="search" placeholder="Buscar: CBS, PGDAS-D, NBC…" autocomplete="off">
       <button type="submit">Buscar</button>
     </form>
   </div>
+  <nav class="menu" aria-label="Editorias"><div class="wrap" id="menu"></div></nav>
 </header>
 
-<nav class="menu" aria-label="Tópicos"><div class="wrap" id="menu"></div></nav>
-
 <div class="wrap">
-  <div class="ultimas"><b>ÚLTIMAS</b><a id="ultima" href="#"></a></div>
+  <div class="ultimas" aria-live="off"><b>ÚLTIMAS</b><a id="ultima" href="#" target="_blank" rel="noopener"></a></div>
+</div>
 
-  <div class="grade">
-    <main id="principal"></main>
+<div class="wrap grade">
+  <main id="principal" tabindex="-1" aria-busy="true"></main>
 
-    <aside class="lateral">
-      <div class="caixa">
-        <h5>Resumo por IA</h5>
-        <button class="btn-ia" id="btn-ia">✨ Classificar e resumir</button>
-        <ul id="resumo"></ul>
-        <p id="status"></p>
+  <aside class="lateral">
+    <section class="caixa briefing" aria-labelledby="t-briefing">
+      <div class="caixa-topo">
+        <h2 id="t-briefing">Seu briefing de hoje</h2>
+        <span class="selo">Gerado por IA</span>
       </div>
-      <div class="caixa"><h5>Mais lidas</h5><ol id="mais-lidas"></ol></div>
-      <div class="caixa"><h5>Datas importantes</h5><div id="prazos"></div></div>
-    </aside>
-  </div>
+      <ul id="resumo" aria-live="polite"></ul>
+      <p class="aviso" id="status-ia" role="status"></p>
+    </section>
+
+    <section class="caixa pergunte" aria-labelledby="t-pergunte">
+      <div class="caixa-topo">
+        <h2 id="t-pergunte">Pergunte ao Thoth</h2>
+        <span class="selo">IA</span>
+      </div>
+      <form id="form-pergunta">
+        <label class="sr" for="campo-pergunta">Sua pergunta sobre as notícias</label>
+        <textarea id="campo-pergunta" rows="2" maxlength="500" placeholder="Ex.: o que muda no PGDAS-D este mês?"></textarea>
+        <button type="submit" id="btn-pergunta">Perguntar</button>
+      </form>
+      <div id="resposta" aria-live="polite"></div>
+    </section>
+
+    <section class="caixa" aria-labelledby="t-alta">
+      <h2 id="t-alta">Em alta</h2>
+      <ol id="em-alta" class="ranking"></ol>
+    </section>
+
+    <section class="caixa" aria-labelledby="t-prazos">
+      <h2 id="t-prazos">Prazos importantes</h2>
+      <div id="prazos"></div>
+    </section>
+  </aside>
 </div>
 
 <footer class="rodape">
-  <div class="wrap">Resumos feitos em palavras próprias; a matéria completa está no link de cada fonte. A classificação automática pode errar. Edição de 20/11/2026.</div>
+  <div class="wrap">
+    <p>Resumos em palavras próprias; a matéria completa está no link de cada fonte. Conteúdo gerado por IA pode conter erros: confira sempre a fonte original.</p>
+    <p id="fontes-info"></p>
+  </div>
 </footer>
 
-<button id="topo-btn" aria-label="Voltar ao topo">↑</button>
+<button id="topo-btn" type="button" aria-label="Voltar ao topo">↑</button>
 
 <script src="js/dados.js"></script>
 <script src="js/app.js"></script>

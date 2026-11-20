@@ -1,12 +1,15 @@
 {
-  "name": "radar-contabil",
+  "name": "thoth-news",
   "version": "1.0.0",
   "private": true,
-  "description": "Portal de notícias de contabilidade e reforma tributária",
+  "description": "Thoth News: notícias de contabilidade e reforma tributária com briefing por IA",
   "main": "server.js",
-  "engines": { "node": ">=20.6" },
+  "engines": {
+    "node": ">=20.6"
+  },
   "scripts": {
     "start": "node --env-file-if-exists=.env server.js",
-    "dev": "node --watch --env-file-if-exists=.env server.js"
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "testar-ia": "node --env-file-if-exists=.env testar-ia.js"
   }
 }
