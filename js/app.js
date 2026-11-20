@@ -370,6 +370,22 @@
   window.addEventListener("scroll", function () { topoBtn.classList.toggle("on", window.scrollY > 600); }, { passive: true });
   topoBtn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
 
+  var temaBtn = $("tema-btn");
+  function aplicarTema(t) {
+    document.documentElement.setAttribute("data-tema", t);
+    var escuro = t === "escuro";
+    temaBtn.textContent = escuro ? "☀" : "☾";
+    temaBtn.setAttribute("aria-pressed", escuro ? "true" : "false");
+    temaBtn.setAttribute("aria-label", escuro ? "Ativar tema claro" : "Ativar tema escuro");
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", escuro ? "#0D1421" : "#0B3D6E");
+  }
+  aplicarTema(document.documentElement.getAttribute("data-tema") === "escuro" ? "escuro" : "claro");
+  temaBtn.addEventListener("click", function () {
+    var t = document.documentElement.getAttribute("data-tema") === "escuro" ? "claro" : "escuro";
+    aplicarTema(t);
+    try { localStorage.setItem("tema", t); } catch (e) {}
+  });
+
   var hoje = new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   $("data").textContent = hoje.charAt(0).toUpperCase() + hoje.slice(1);
   carregar();

@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>(function(){var t;try{t=localStorage.getItem("tema")}catch(e){}if(t!=="claro"&&t!=="escuro")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"escuro":"claro";document.documentElement.setAttribute("data-tema",t);if(t==="escuro")document.querySelector('meta[name="theme-color"]').setAttribute("content","#0D1421")})()</script>
 </head>
 <body>
 <a class="pular" href="#principal">Pular para o conteúdo</a>
@@ -25,11 +26,14 @@
       <svg width="40" height="40" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#0B3D6E"/><path d="M24 9a10 10 0 1 0 0 18a8 8 0 1 1 0-18z" fill="#F2B632"/></svg>
       <span>Thoth<b> News</b></span>
     </a>
+    <div class="topo-acoes">
     <form class="busca" id="form-busca" role="search">
       <label class="sr" for="campo-busca">Buscar notícias</label>
       <input id="campo-busca" type="search" placeholder="Buscar: CBS, PGDAS-D, NBC…" autocomplete="off">
       <button type="submit">Buscar</button>
     </form>
+    <button type="button" class="tema-btn" id="tema-btn" aria-label="Ativar tema escuro" aria-pressed="false">☾</button>
+    </div>
   </div>
   <nav class="menu" aria-label="Editorias"><div class="wrap" id="menu"></div></nav>
 </header>
